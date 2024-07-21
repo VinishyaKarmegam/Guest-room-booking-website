@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background: url('https://assets-news.housing.com/news/wp-content/uploads/2022/01/11172338/World%E2%80%99s-15-Most-Beautiful-Houses-That-Will-Leave-You-Awestruck-featured-shutterstock_1182743467-1200x700-compressed.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #fff;
+    margin-top: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.dashboard-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.logout-button a {
+    color: #fff;
+    background-color: #f44336;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.logout-button a:hover {
+    background-color: #d32f2f;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.search-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.search-form input[type="date"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #45a049;
+}
+
+.results-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.rooms-list {
+    list-style: none;
+    padding: 0;
+}
+
+.room-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.room-item a {
+    font-size: 1.2em;
+    color: #333;
+    text-decoration: none;
+}
+
+.room-item a:hover {
+    text-decoration: underline;
+}
+
+</style>
+<body>
+    <h1>V.K Guest Room Booking Application</h1>
+    <div class="dashboard-container">
+        <h2>Customer Dashboard</h2>
+        <p>Welcome, {{ session['username'] }}!</p>
+
+        <div class="logout-button">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+
+        <h3>Search for Rooms</h3>
+        <form method="POST" class="search-form">
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if rooms %}
+            <div class="results-container">
+                <h3>Available Rooms</h3>
+                <ul class="rooms-list">
+                    {% for room in rooms %}
+                        <li class="room-item">
+                            <a href="{{ url_for('room_details', room_id=room.id) }}">{{ room.name }}</a>
+                            <p>Floor Size: {{ room.floor_size }} sq meters</p>
+                            <p>Rent per Day: {{ room.rent_per_day }} USD</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
+
+
